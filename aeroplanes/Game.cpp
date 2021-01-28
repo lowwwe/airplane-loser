@@ -106,6 +106,10 @@ void Game::processKeys(sf::Event t_event)
 	{
 		m_exitGame = true;
 	}
+	if (sf::Keyboard::F1 == t_event.key.code)
+	{
+		m_debugGraphis = !m_debugGraphis;
+	}
 }
 
 /// <summary>
@@ -251,6 +255,14 @@ bool Game::checkforCollision(sf::Vector2f t_locationOne, float t_radiusOne, sf::
 	float distance = 0.0f;
 	sf::Vector2f gap = t_locationOne - t_locationTwo;
 	distance = vector2fLenght(gap);
+	sf::FloatRect big = m_bigPlaneSprite.getGlobalBounds();
+	sf::FloatRect small = m_smallPlaneSprite.getGlobalBounds();
+
+	if (big.intersects(small))
+	{
+		std::cout << "kaboom" << std::endl;
+	}
+
 	if (distance < (t_radiusOne + t_radiusTwo))
 	{
 		m_explosionSprite.setPosition((t_locationTwo + t_locationOne) /2.0f );
@@ -364,7 +376,17 @@ void Game::debugSprite(sf::Sprite& t_sprite)
 	sf::CircleShape dot;
 	sf::CircleShape ring;
 	sf::RectangleShape localBox;
+	sf::RectangleShape globalBox;
 	float radius;
+
+	globalBox.setFillColor(sf::Color::Transparent);
+	globalBox.setOutlineColor(sf::Color::Green);
+	globalBox.setOutlineThickness(2.0f);
+	globalBox.setPosition(t_sprite.getPosition());
+	globalBox.setSize(sf::Vector2f(t_sprite.getGlobalBounds().width
+		, t_sprite.getGlobalBounds().height));
+	globalBox.setOrigin(t_sprite.getGlobalBounds().width / 2.0f
+		, t_sprite.getGlobalBounds().height / 2.0f);
 
 	localBox.setFillColor(sf::Color::Transparent);
 	localBox.setOutlineColor(sf::Color::Black);
@@ -395,7 +417,18 @@ void Game::debugSprite(sf::Sprite& t_sprite)
 	dot.setRadius(4.0f);
 	dot.setPosition(t_sprite.getPosition());
 	dot.setOrigin(4.0f, 4.0f);
+	
+	float stretch = 38.0f;
+	float angleAdjust = 36.0f;
+	sf::Vector2f displace;
+	float myangle = (t_sprite.getRotation() - 90.0f + angleAdjust) / 180 * 3.14;
+	displace.x = std::cos(myangle) * stretch;
+	displace.y = std::sin(myangle) * stretch;
 
+	dot.setPosition(t_sprite.getPosition() + displace);
+
+
+	m_window.draw(globalBox);
 	m_window.draw(localBox);
 	m_window.draw(ring);
 	m_window.draw(dot);
