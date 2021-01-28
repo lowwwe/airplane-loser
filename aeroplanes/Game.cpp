@@ -191,6 +191,7 @@ void Game::render()
 	if (m_debugGraphis)
 	{
 		debugSprite(m_bigPlaneSprite);
+		debugSprite(m_smallPlaneSprite);
 	}
 
 	if (m_explosionOn)
@@ -361,12 +362,30 @@ void Game::setupSprites()
 void Game::debugSprite(sf::Sprite& t_sprite)
 {
 	sf::CircleShape dot;
+	sf::CircleShape ring;
+	float radius;
+
+	ring.setFillColor(sf::Color::Transparent);
+	ring.setOutlineColor(sf::Color::Red);
+	ring.setOutlineThickness(3.0f);
+	ring.setPosition(t_sprite.getPosition());
+	if (t_sprite.getLocalBounds().height < t_sprite.getLocalBounds().width)
+	{
+		radius = t_sprite.getLocalBounds().width /2.0f;
+	}
+	else
+	{
+		radius = t_sprite.getLocalBounds().height / 2.0f;
+	}
+	ring.setRadius(radius);
+	ring.setOrigin(t_sprite.getOrigin());
 
 	dot.setFillColor(sf::Color::Yellow);
 	dot.setRadius(4.0f);
 	dot.setPosition(t_sprite.getPosition());
 	dot.setOrigin(4.0f, 4.0f);
 
+	m_window.draw(ring);
 	m_window.draw(dot);
 
 }
