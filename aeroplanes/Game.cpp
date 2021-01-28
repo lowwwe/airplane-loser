@@ -188,6 +188,11 @@ void Game::render()
 	}
 	m_window.draw(m_bigPlaneSprite);
 	m_window.draw(m_smallPlaneSprite);
+	if (m_debugGraphis)
+	{
+		debugSprite(m_bigPlaneSprite);
+	}
+
 	if (m_explosionOn)
 	{
 		m_window.draw(m_explosionSprite);
@@ -239,7 +244,7 @@ void Game::keepOnScreen(sf::Vector2f &t_location)
 /// <param name="t_radiusOne">first radius </param>
 /// <param name="t_locationTwo">second centre point</param>
 /// <param name="t_radiusTwo">seconf radius </param>
-/// <returns></returns>
+/// <returns>true if planes touch</returns>
 bool Game::checkforCollision(sf::Vector2f t_locationOne, float t_radiusOne, sf::Vector2f t_locationTwo, float t_radiusTwo)
 {
 	float distance = 0.0f;
@@ -347,6 +352,23 @@ void Game::setupSprites()
 	m_explosionSprite.setTexture(m_explosionTexture);
 	m_explosionSprite.setOrigin(50.0f, 50.0f);
 	m_explosionSprite.setTextureRect(sf::IntRect{ 0, 0, 100, 100 });
+}
+
+/// <summary>
+/// draw bounding boxes and collision circles for the aeroplanes
+/// </summary>
+/// <param name="t_sprite">areoplane sprite</param>
+void Game::debugSprite(sf::Sprite& t_sprite)
+{
+	sf::CircleShape dot;
+
+	dot.setFillColor(sf::Color::Yellow);
+	dot.setRadius(4.0f);
+	dot.setPosition(t_sprite.getPosition());
+	dot.setOrigin(4.0f, 4.0f);
+
+	m_window.draw(dot);
+
 }
 
 

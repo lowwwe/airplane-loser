@@ -43,6 +43,7 @@ private:
 	
 	void setupFontAndText();
 	void setupSprites();
+	void debugSprite(sf::Sprite &t_sprite);
 
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_ArialBlackfont; // font used by message
@@ -74,6 +75,8 @@ private:
 	float m_smallPaneRadius = 44.0f; // bounding radius of small plane
 	
 	bool m_exitGame; // control exiting game
+
+	bool m_debugGraphis{ true };  // control when degub graphics are on
 
 };
 
