@@ -363,7 +363,18 @@ void Game::debugSprite(sf::Sprite& t_sprite)
 {
 	sf::CircleShape dot;
 	sf::CircleShape ring;
+	sf::RectangleShape localBox;
 	float radius;
+
+	localBox.setFillColor(sf::Color::Transparent);
+	localBox.setOutlineColor(sf::Color::Black);
+	localBox.setOutlineThickness(2.0f);
+	localBox.setOrigin(t_sprite.getOrigin());
+	localBox.setRotation(t_sprite.getRotation());
+	localBox.setPosition(t_sprite.getPosition());
+	localBox.setSize(sf::Vector2f{ t_sprite.getLocalBounds().width
+		, t_sprite.getLocalBounds().height });
+
 
 	ring.setFillColor(sf::Color::Transparent);
 	ring.setOutlineColor(sf::Color::Red);
@@ -385,6 +396,7 @@ void Game::debugSprite(sf::Sprite& t_sprite)
 	dot.setPosition(t_sprite.getPosition());
 	dot.setOrigin(4.0f, 4.0f);
 
+	m_window.draw(localBox);
 	m_window.draw(ring);
 	m_window.draw(dot);
 
